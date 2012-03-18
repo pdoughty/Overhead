@@ -1,0 +1,10 @@
+Doom 3 GPL: Overhead Game
+
+Lots of free code in here for anyone interested in Doom 3 GPL engine devlopment.  I have only included the Game source that I have modified as the enginge enhancements weren't enough to warrant a commit.
+
+Some Features Included:
+New weapons
+Items
+Item Interaction System (use listbinds to find out the keys to use)
+Stat tracking
+Custom Level Ending Sequences
