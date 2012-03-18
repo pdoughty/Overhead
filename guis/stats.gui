@@ -1,0 +1,53 @@
+windowDef Desktop
+{
+   rect   0, 0, 640, 480
+   menugui   1
+   noTime   0
+   backcolor   0,0.2,0,1
+   forecolor   1,1,1,1
+
+   onAction {
+     // transition "backcolor" "1,1,1,0.5" "1,1,1,1" "100";
+      //transition "backcolor" "1,1,1,1" "1,1,1,0.5" "100";
+     // set "cmd" "statsOver";
+   }
+
+
+   windowDef secrets
+   {
+      rect 200, 150, 100, 50
+      text   "gui::secrets_found"
+      forecolor   1,1,1,1
+      textscale   0.23
+      font   "fonts/bank"
+      textalign 2
+   }
+   windowDef kills
+   {
+      rect 200, 220, 100, 50
+      text   "gui::kills"
+      forecolor   1,1,1,1
+      textscale   0.23
+      font   "fonts/bank"
+      textalign 2
+   }
+   windowDef items
+   {
+      rect 200, 290, 100, 50
+      text   "gui::items"
+      forecolor   1,1,1,1
+      textscale   0.23
+      font   "fonts/bank"
+      textalign 2
+   }
+   windowDef time
+   {
+      rect 200, 360, 100, 50
+      text   "gui::time"
+      forecolor   1,1,1,1
+      textscale   0.23
+      font   "fonts/bank"
+      textalign 2
+   }
+
+}

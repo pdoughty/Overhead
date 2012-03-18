@@ -1,0 +1,31 @@
+windowDef Desktop
+{
+	rect	0, 0, 640, 480
+	backcolor	0, 0, 0, 0
+	visible	1
+	nocursor	1
+
+
+	windowDef HealthBar
+	{
+		rect	4, 416, ("gui::player_health" * 1.33), 64
+		visible	1
+		windowDef HealthBarImage
+		{
+			rect	55,7,138,54
+			matcolor	1, 1, 1, 1
+			background	"guis/assets/hud/mp/lstafill1"
+			visible	1
+		}
+	}
+	windowDef ammoCounts
+	{
+		rect	580,434,55,33
+		visible	1
+		forecolor	1, 1, 1, 0.5
+		text	"gui::player_ammo"
+		textscale	0.2
+		textalign	2
+	}
+
+}

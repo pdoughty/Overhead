@@ -1,0 +1,477 @@
+/***********************************************************************
+
+weapon_trap.script
+
+***********************************************************************/
+
+#define TRAP_AUTOTHROW           0 // change to 1 to have the grenade being thrown when selected
+#define TRAP_MINRELEASETIME      0.05
+#define TRAP_FUSE                0
+#define TRAP_MAXFUSE             30
+
+#define TRAP_MINPOWER            1.5
+#define TRAP_MAXPOWER            7
+
+#define TRAP_NORMALTHROWLAUNCH   0
+#define TRAP_NUMPROJECTILES      1
+#define TRAP_PROXIMITY           800
+#define TRAP_SPLASHRADIUS        175
+#define TRAP_MAXMINES            1
+
+// blend times
+#define TRAP_IDLE_TO_LOWER       4
+#define TRAP_IDLE_TO_FIRE        4
+#define TRAP_RAISE_TO_IDLE       4
+#define TRAP_FIRE_TO_IDLE        4
+
+// *******************************************************
+// *******************************************************
+// *******************************************************
+// ******* USAR BIND+TOUCHES PARA STICK GRENADES *********
+// *******************************************************
+// *******************************************************
+// *******************************************************
+
+object weapon_trap : weapon_base {
+    float       spread;
+    float       fuse_start;
+    string      skin_nade;
+    string      skin_nade_invis;
+    string      skin_nonade;
+    string      skin_nonade_invis;
+    entity      gl_projectile;
+    boolean     show_grenade;
+
+    void        init();
+
+    void        Lower();
+    void        Raise();
+    void        Idle();
+    void        Fire();
+    void        EnterCinematic();
+    void        ExitCinematic();
+   // void        WeaponStolen();
+    void        OwnerDied();
+   // void        ExplodeInHand(entity projectile);
+
+                // called by the game
+    void        UpdateSkin();
+
+                // used by anim frame commands
+    void        GrenadeNade();
+    void        GrenadeNoNade();
+
+    void        Proximity( entity projectile );
+};
+
+void weapon_trap::init() {
+    spread              = getFloatKey( "spread" );
+    skin_nade           = getKey( "skin_nade" );
+    skin_nade_invis     = getKey( "skin_nade_invis" );
+    skin_nonade         = getKey( "skin_nonade" );
+    skin_nonade_invis   = getKey( "skin_nonade_invis" );
+
+    GrenadeNade();
+
+    weaponState( "Raise", 0 );
+}
+
+void weapon_trap::Raise() {
+    string previous;
+    entity owner;
+
+    weaponRising();
+    weaponReady();
+
+    if ( WEAPON_ATTACK || TRAP_AUTOTHROW ) {
+        weaponState( "Fire", TRAP_IDLE_TO_FIRE );
+    } else {
+        playAnim( ANIMCHANNEL_ALL, "raise" );
+        waitUntil( animDone( ANIMCHANNEL_ALL, TRAP_RAISE_TO_IDLE ) || WEAPON_ATTACK);
+
+        if ( WEAPON_ATTACK ) {
+            weaponState( "Fire", TRAP_IDLE_TO_FIRE );
+        } else {
+            weaponState( "Idle", TRAP_RAISE_TO_IDLE );
+        }
+    }
+}
+
+void weapon_trap::Lower() {
+    weaponLowering();
+    stopSound(SND_CHANNEL_ITEM, true );
+    playAnim( ANIMCHANNEL_ALL, "putaway" );
+    waitUntil( animDone( ANIMCHANNEL_ALL, 0 ) );
+    weaponHolstered();
+    waitUntil( WEAPON_RAISEWEAPON );
+    weaponState( "Raise", 0 );
+}
+
+void weapon_trap::Idle() {
+    float   lpLim;
+    float   loop;
+    entity  victim;
+    entity  owner;
+
+    playCycle( ANIMCHANNEL_ALL, "idle" );
+    while( 1 ) {
+        if ( WEAPON_LOWERWEAPON ) {
+            weaponState( "Lower", TRAP_IDLE_TO_LOWER );
+        }
+
+        if ( WEAPON_ATTACK ) {
+            weaponState( "Fire", TRAP_IDLE_TO_FIRE );
+        }
+
+        if ( WEAPON_RELOAD ) {
+
+            owner = getOwner();
+
+            if ( owner.getIntKey( "activeMines" ) >= 1 ) {
+
+                lpLim = owner.getFloatKey( "grenadeNum" );
+
+                for( loop = 1; loop <= lpLim; loop++ ) {
+
+                    if ( owner.getKey( "grenadeList" + loop ) != "" ) {
+
+                        victim = sys.getEntity( owner.getKey( "grenadeList" + loop ) );
+                        victim.setKey( "detonate", "0.05" );
+                        break;
+                    }
+                }
+
+            } else {
+                startSound( "snd_lowammo", SND_CHANNEL_ITEM, true );
+            }
+        }
+
+        waitFrame();
+    }
+}
+
+void weapon_trap::Fire() {
+    float fuse_end;
+    float current_time;
+    float time_held;
+    float power;
+    boolean exploded;
+    string previous;
+    entity owner;
+    boolean cancelled;
+    boolean quick_throw;
+    entity projectile;
+    boolean sound_started;
+
+    projectile = createProjectile();
+    gl_projectile = projectile;
+
+    if ( ammoAvailable() == 1 ) {
+        startSound( "snd_lowammo", SND_CHANNEL_ITEM, true );
+    } else {
+        startSound( "snd_acquire", SND_CHANNEL_ITEM, true );
+    }
+
+    playAnim( ANIMCHANNEL_ALL, "throw_start" );
+
+    current_time = sys.getTime();
+    fuse_start = current_time;
+    fuse_end = current_time + TRAP_FUSE;
+    cancelled = false;
+    sound_started = false;
+    quick_throw = false;
+
+    while( current_time < fuse_end ) {
+
+        if ( WEAPON_LOWERWEAPON ) {
+
+            if ( projectile ) {
+                projectile.stopSound(SND_CHANNEL_BODY, true );
+            }
+
+            cancelled = true;
+            break;
+        }
+
+      
+
+        if ( ( current_time > fuse_start + TRAP_MINRELEASETIME ) && !WEAPON_ATTACK ) {
+            break;
+        }
+
+        waitFrame();
+        current_time = sys.getTime();
+    }
+
+   
+        if ( !exploded ) {
+
+            GrenadeNoNade();
+            current_time = sys.getTime();
+
+            if ( projectile ) {
+
+        
+
+                    projectile.setKey("detonate_on_world", "0");
+                    projectile.setKey("detonate_on_actor", "0");
+                    projectile.setKey("detonate_on_trigger", "0");
+                    projectile.setKey("light_color", "0.4 1 0.05");
+                    projectile.setKey("light_shader", "lights/impflyflash");
+                    projectile.setKey("detonate", "0");
+
+                    projectile.show();
+                    projectile.unbind();
+                    launchProjectiles( TRAP_NUMPROJECTILES, spread, current_time - fuse_start, 2.5, 1.0 );
+                    thread Proximity( projectile );
+
+              
+            }
+
+            waitUntil( animDone( ANIMCHANNEL_ALL, TRAP_FIRE_TO_IDLE ) );
+        }
+    
+
+    if( ammoAvailable() == 0 ) {
+
+        owner = getOwner();
+        previous = owner.getPreviousWeapon();
+        weaponHolstered();
+        owner.selectWeapon( previous );
+
+    } else {
+
+        weaponState( "Idle", TRAP_FIRE_TO_IDLE );
+    }
+}
+
+void weapon_trap::Proximity( entity projectile ) {
+    vector      lastPos;
+    float       loop;
+    float       lpLim;
+    string      foe_name;
+    entity      foe_entity;
+    float       distance;
+    float       min_distance;
+    entity      explosion;
+    entity      victim;
+    entity      owner;
+    boolean     sound_started;
+    float       grenade_num;
+    string      grenade_name;
+    float       launch_time;
+    float       daisy_chain;
+
+    owner = getOwner();
+    lastPos = projectile.getWorldOrigin();
+    sound_started = false;
+    launch_time = sys.getTime();
+
+    if ( owner.getIntKey( "activeMines" ) >= TRAP_MAXMINES ) {
+
+        lpLim = owner.getFloatKey( "grenadeNum" );
+
+        for( loop = 1; loop <= lpLim; loop++ ) {
+
+            if ( owner.getKey( "grenadeList" + loop ) != "" ) {
+
+                victim = sys.getEntity( owner.getKey( "grenadeList" + loop ) );
+                victim.setKey( "detonate", "0.5" );
+                break;
+            }
+        }
+    }
+
+    owner.setKey( "activeMines", owner.getIntKey( "activeMines" ) + 1 );
+
+    grenade_num = owner.getFloatKey("grenadeNum")+1;
+    owner.setKey("grenadeList" + grenade_num, projectile.getName());
+    owner.setKey("grenadeNum", grenade_num);
+
+    sys.waitFrame();
+
+    while( ( projectile.getProjectileState() != PROJECTILE_EXPLODED ) && ( projectile.getProjectileState() != 0 ) ) {
+
+        daisy_chain = projectile.getFloatKey( "detonate" );
+
+        if ( daisy_chain > 0 ) {
+
+            sys.wait( daisy_chain );
+            break;
+        }
+
+        if ( sys.getTime() >= ( launch_time + TRAP_MAXFUSE ) ) {
+
+            break;
+        }
+
+        if ( sound_started || ( lastPos == projectile.getWorldOrigin() ) ) {
+
+            if ( !sound_started ) {
+
+                projectile.startSound( "snd_proximity", SND_CHANNEL_BODY, true );
+                sound_started = true;
+            }
+
+            min_distance = 999999;
+            victim = $null_entity;
+
+            lpLim = $world.getFloatKey( "monsterNum" );
+
+            for( loop = 1; loop <= lpLim; loop++ ) {
+
+                foe_name = $world.getKey("monsterList" + loop );
+
+                if ( foe_name != "" ) {
+
+                    foe_entity = sys.getEntity( foe_name );
+
+                    if ( ( foe_entity != $null_entity ) && ( !foe_entity.isHidden() ) && ( ( foe_entity.getHealth() > 0 || foe_entity.getIntKey( "isPlayer" ) ) ) ) {
+
+                        distance = projectile.distanceTo( foe_entity );
+
+                        if ( distance < min_distance ) {
+
+                            min_distance = distance;
+                            victim = foe_entity;
+                        }
+                    }
+                }
+            }
+
+            if ( ( min_distance <= TRAP_PROXIMITY ) && ( victim != $null_entity ) ) {
+
+                projectile.startSound( "snd_alarm", SND_CHANNEL_BODY, true );
+                sys.wait( 0.75 );
+                projectile.setLinearVelocity('0 0 400');
+                projectile.setAngularVelocity('100 -100 100');
+                sys.wait( 0.25 );
+                projectile.hide();
+                break;
+            }
+
+        } else {
+
+            lastPos = projectile.getWorldOrigin();
+        }
+
+        sys.waitFrame();
+    }
+
+    owner.setKey("grenadeList" + grenade_num, "");
+
+    if( ( projectile.getProjectileState() != PROJECTILE_EXPLODED ) && ( projectile.getProjectileState() != 0 ) ) {
+
+        lastPos = projectile.getWorldOrigin();
+        lpLim = owner.getFloatKey( "grenadeNum" );
+        victim = $null_entity;
+        daisy_chain = 0;
+
+        for(loop = 1; loop <= lpLim; loop++) {
+
+            grenade_name = owner.getKey( "grenadeList" + loop );
+
+            if ( grenade_name != "" ) {
+
+                victim = sys.getEntity( grenade_name );
+
+                if ( ( victim != $null_entity ) && ( victim != projectile ) ) {
+
+                    distance = projectile.distanceTo( victim );
+
+                    if ( distance <= TRAP_SPLASHRADIUS ) {
+
+                        daisy_chain += 0.5;
+                        victim.setKey( "detonate", daisy_chain );
+                    }
+                }
+            }
+        }
+
+        projectile.stopSound( SND_CHANNEL_BODY, true );
+        //explosion = sys.spawn( "env_grenade_explodeinhand" );
+        explosion.startSound( "snd_explode", SND_CHANNEL_ITEM, true );
+        explosion.setOrigin( lastPos );
+        explosion.setShaderParm( SHADERPARM_TIMEOFFSET, -sys.getTime() );
+        delayRemove( explosion, 5 );
+        delayRemove( projectile, 0.5 );
+        sys.radiusDamage( lastPos, self, owner, $null_entity, "damage_grenadeSplash", 1.0 );
+    }
+
+    owner.setKey( "activeMines", owner.getIntKey( "activeMines" ) - 1 );
+
+    projectile = $null_entity;
+    gl_projectile = $null_entity;
+}
+
+void weapon_trap::EnterCinematic() {
+    if ( gl_projectile ) {
+        gl_projectile.remove();
+        gl_projectile = $null_entity;
+    }
+    weaponState( "Idle", 0 );
+}
+
+void weapon_trap::ExitCinematic() {
+    string previous;
+    entity owner;
+
+    if ( !ammoAvailable() ) {
+
+        owner = getOwner();
+        previous = owner.getPreviousWeapon();
+        weaponHolstered();
+        owner.selectWeapon( previous );
+
+//      weaponHolstered();
+//      nextWeapon();
+    } else {
+        GrenadeNade();
+        weaponState( "Idle", 0 );
+    }
+}
+
+void weapon_trap::GrenadeNade() {
+    show_grenade = true;
+    UpdateSkin();
+}
+
+void weapon_trap::GrenadeNoNade() {
+    show_grenade = false;
+    UpdateSkin();
+}
+
+void weapon_trap::UpdateSkin() {
+    if ( !show_grenade ) {
+        if ( isInvisible() ) {
+            setSkin( skin_nonade_invis );
+        } else {
+            setSkin( skin_nonade );
+        }
+    } else {
+        if ( isInvisible() ) {
+            setSkin( skin_nade_invis );
+        } else {
+            setSkin( skin_nade );
+        }
+    }
+}
+
+
+
+void weapon_trap::OwnerDied() {
+    float time_held;
+
+    if ( gl_projectile ) {
+        time_held = sys.getTime() - fuse_start;
+        gl_projectile.show();
+        gl_projectile.unbind();
+
+        // allow grenade to drop
+        launchProjectiles( TRAP_NUMPROJECTILES, spread, time_held, 0, 1.0 );
+
+        gl_projectile = $null_entity;
+    }
+}
+
+

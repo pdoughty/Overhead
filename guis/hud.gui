@@ -1,0 +1,1593 @@
+windowDef Desktop
+{
+	rect	0, 0, 640, 480
+	backcolor	0, 0, 0, 0
+	visible	1
+	nocursor	0
+	menugui	1
+
+
+	windowDef HealthBar
+	{
+		rect	4, 416, ("gui::player_health" * 1.33), 64
+		visible	1
+		windowDef HealthBarImage
+		{
+			rect	5,7,138,54
+			matcolor	1, 1, 1, 1
+			background	"guis/assets/hud/mp/lstafill1"
+			visible	1
+		}
+	}
+	windowDef ammoCounts
+	{
+		rect	280,434,55,33
+		visible	1
+		forecolor	1, 1, 1, 0.5
+		text	"gui::player_ammo"
+		textscale	0.2
+		textalign	2
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  Message
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	onNamedEvent Message {
+		transition "message1a::forecolor" "0 0 0 1" "0 0 0 0" "50" "1" "0" ;
+		transition "message1::forecolor" "1 1 1 1" "1 1 1 0" "50" "1" "0" ;
+	}
+
+//////**********************************************************************
+//  Message Broadcast
+//////**********************************************************************
+
+	windowDef message1a {
+		rect 286, 300, 638, 10
+		forecolor 0, 0, 0, 0
+		text "gui::message"
+		textscale 0.25
+		font "fonts/an"
+	}
+	windowDef message1 {
+		rect 285, 299, 638, 10
+		forecolor 1, 1, 1, 0
+		text "gui::message"
+		textscale 0.25
+		font "fonts/an"
+	}
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  NPC Name Popup
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+
+//NPCName2::visible / NPCName2a::visible
+
+	onNamedEvent ShowNPC {
+		if ("talk" == 0) {
+			set	"talk" "1" ; 
+			resetTime "npcName1" "0" ; 
+		}
+	}
+
+	onNamedEvent HideNPC {
+		if ("talk" == 1) { 
+			set	"talk" "0" ; 
+			set "NPCName2a::rect" "336 233 0 0" ;
+			set "NPCName2a::forecolor" "0 0 0 0" ;
+			set "NPCName2::rect" "335 232 0 0" ;
+			set "NPCName2::forecolor" "0.5 0.5 0.5 0" ;		
+			set "NPCName1a::rect" "336 221 0 0" ;
+			set "NPCName1a::forecolor" "0 0 0 0" ;
+			set "NPCName1::rect" "335 220 0 0" ;
+			set "NPCName1::forecolor" "0.6 0.8 0.7 0" ;			
+		}
+	}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  New Weapon Pickup
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	onNamedEvent newWeapon {
+		if ("gui::newweapon" == 1) { 
+			resetTime "WeapIcon1Large" "0" ;
+		}
+		if ("gui::newweapon" == 2) { 
+			resetTime "WeapIcon2Large" "0" ;
+		}
+		if ("gui::newweapon" == 3) { 
+			resetTime "WeapIcon3Large" "0" ;
+		}
+		if ("gui::newweapon" == 4) { 
+			resetTime "WeapIcon4Large" "0" ;
+		}
+		if ("gui::newweapon" == 5) { 
+			resetTime "WeapIcon5Large" "0" ;
+		}
+		if ("gui::newweapon" == 6) { 
+			resetTime "WeapIcon6Large" "0" ;
+		}
+		if ("gui::newweapon" == 7) { 
+			resetTime "WeapIcon7Large" "0" ;
+		}
+		if ("gui::newweapon" == 8) { 
+			resetTime "WeapIcon8Large" "0" ;
+		}
+		if ("gui::newweapon" == 9) { 
+			resetTime "WeapIcon9Large" "0" ;
+		}
+		if ("gui::newweapon" == 10) { 
+			resetTime "WeapIcon10Large" "0" ;
+		}
+	}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  Pickup Item Popup
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	onNamedEvent invPickup {
+		resetTime "InvItem" "0" ; 
+	}
+	onNamedEvent itemPickup1 {
+		resetTime "ItemPickup1" "0" ; 
+	}
+	onNamedEvent itemPickup2 {
+		resetTime "ItemPickup2" "0" ; 
+	}	
+	onNamedEvent itemPickup3 {
+		resetTime "ItemPickup3" "0" ; 
+	}	
+	onNamedEvent itemPickup4 {
+		resetTime "ItemPickup4" "0" ; 
+	}	
+	onNamedEvent itemPickup5 {
+		resetTime "ItemPickup5" "0" ; 
+	}	
+
+	onNamedEvent armorPulse {
+		resetTime "armorflash" "0" ; 
+	}
+	onNamedEvent healthPulse {
+		resetTime "healthflash" "0" ; 
+	}
+	onNamedEvent ammoPulse {
+		resetTime "ammoflash1" "0" ; 
+		resetTime "ammoflash2" "0" ; 
+	}
+	onNamedEvent weaponPulse {
+		resetTime "weaponflash" "0" ; 
+	}	
+	
+	onNamedEvent pdaPickup {
+		resetTime "animPDA" "0" ; 
+		set "NewPDAVis::visible" "1" ;
+	}
+	onNamedEvent emailPickup {
+		resetTime "animNewMail" "0" ;
+	}
+
+	onNamedEvent securityPickup {
+		resetTime "SecOnly" "0" ; 
+	}
+	
+	onNamedEvent videoPickup {
+		resetTime "animVid" "0" ; 
+		set "NewVidVis::visible" "1" ;
+	}
+	onNamedEvent pdaPickupHide {
+		set "NewPDAVis::visible" "0" ;
+		set "NEWPDAIcon::visible" "0" ;
+		set "NEWPDA::visible" "0" ;
+	}
+	onNamedEvent videoPickupHide {
+		set "NewVidVis::visible" "0" ;
+		set "NEWVidIcon::visible" "0" ;
+		set "NEWVid::visible" "0" ;
+	}		
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  Weapon Icon Flash
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	onNamedEvent weaponChange {
+		if ("gui::weapon0" == 2) { 
+			resetTime "WeapIcon0" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+
+		if ("gui::weapon1" == 2) { 
+			resetTime "WeapIcon1" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "1" ;
+			set 	"AmmoFlash1::visible" "0" ;
+			set	"ScanLineLA::visible" "1" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "1" ;
+			set	"weaphud" "0" ;
+			set	"BgLA::visible" "1" ;
+			set	"Lines1A::visible" "1" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "1" ;
+			set	"ammovalue2Black::visible" "1" ;
+			set	"ammovalue2::visible" "1" ;
+			set	"ammovalue3Black::visible" "1" ;
+			set	"ammovalue3::visible" "1" ;
+		} 
+
+		if ("gui::weapon2" == 2) { 
+			resetTime "WeapIcon2" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "1" ;
+			set 	"AmmoFlash1::visible" "0" ;
+			set	"ScanLineLA::visible" "1" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "1" ;
+			set	"weaphud" "0" ;
+			set	"BgLA::visible" "1" ;
+			set	"Lines1A::visible" "1" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "1" ;
+			set	"ammovalue2Black::visible" "1" ;
+			set	"ammovalue2::visible" "1" ;
+			set	"ammovalue3Black::visible" "1" ;
+			set	"ammovalue3::visible" "1" ;
+		} 
+		if ("gui::weapon3" == 2) { 
+			resetTime "WeapIcon3" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+		if ("gui::weapon4" == 2) { 
+			resetTime "WeapIcon4" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+		if ("gui::weapon5" == 2) { 
+			resetTime "WeapIcon5" "0" ;
+			set "ammovalue3::forecolor" "0.35 0.42 0.4 1" ;
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "1" ;
+			set	"BorderLAGrenades::visible" "1" ;
+			set	"BorderLA::visible" "0" ;
+			set	"weaphud" "2" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "1" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "1" ;
+			set	"ammovalue3::visible" "1" ;
+		} 
+		if ("gui::weapon6" == 2) { 
+			resetTime "WeapIcon6" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+		if ("gui::weapon7" == 2) { 
+			resetTime "WeapIcon7" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "1" ;
+			set 	"AmmoFlash1::visible" "0" ;
+			set	"ScanLineLA::visible" "1" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "1" ;
+			set	"weaphud" "0" ;
+			set	"BgLA::visible" "1" ;
+			set	"Lines1A::visible" "1" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "1" ;
+			set	"ammovalue2Black::visible" "1" ;
+			set	"ammovalue2::visible" "1" ;
+			set	"ammovalue3Black::visible" "1" ;
+			set	"ammovalue3::visible" "1" ;
+		} 
+		if ("gui::weapon8" == 2) { 
+			resetTime "WeapIcon8" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+		if ("gui::weapon9" == 2) { 
+			resetTime "WeapIcon9" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+		if ("gui::weapon10" == 2) { 
+			resetTime "WeapIcon10" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.9" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.4" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+		if ("gui::weapon11" == 2) { 
+			resetTime "WeapIcon11" "0" ; 
+			set	"weapon0::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon1::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon2::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon3::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon4::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon5::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon6::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon7::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon8::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon9::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon10::matcolor" "0 0.6 0.6 0.4" ;
+			set	"weapon11::matcolor" "0 0.6 0.6 0.9" ;
+
+			set 	"AmmoFlash2::visible" "0" ;
+			set 	"AmmoFlash1::visible" "1" ;
+			set	"ScanLineLA::visible" "0" ;
+			set	"ScanLineLAG::visible" "0" ;
+			set	"BorderLAGrenades::visible" "0" ;
+			set	"BorderLA::visible" "0" ;
+			set	"BorderLA_1::visible" "0" ;
+			set	"BorderLA_2::visible" "0" ;
+			set	"weaphud" "1" ;
+			set	"BgLA::visible" "0" ;
+			set	"Lines1A::visible" "0" ;
+			set	"Lines1B::visible" "0" ;
+			set	"Lines2A::visible" "0" ;
+			set	"ammovalue2Black::visible" "0" ;
+			set	"ammovalue2::visible" "0" ;
+			set	"ammovalue3Black::visible" "0" ;
+			set	"ammovalue3::visible" "0" ;
+		} 
+	}
+
+
+//////**********************************************************************
+//  Weapon Icons
+//////**********************************************************************
+
+	windowDef Weapon11 {
+		rect	526 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon11" != 0)
+	}
+	windowDef Weapon0 {
+		rect	535 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon0" != 0)
+	}	
+	windowDef Weapon1 {
+		rect	544 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon1" != 0)
+	}
+	windowDef Weapon2 {
+		rect	553 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon2" != 0)
+	}
+	windowDef Weapon3 {
+		rect	562 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon3" != 0)
+	}
+	windowDef Weapon4 {
+		rect	571 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon4" != 0)
+	}
+	windowDef Weapon5 {
+		rect	580 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon5" != 0)
+	}
+	windowDef Weapon6 {
+		rect	589 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon6" != 0)
+	}
+	windowDef Weapon7 {
+		rect	598 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon7" != 0)
+	}
+	windowDef Weapon8 {
+		rect	607 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon8" != 0)
+	}
+	windowDef Weapon9 {
+		rect	616 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon9" != 0)
+	}
+	windowDef Weapon10 {
+		rect	625 ,471 ,10 ,6 
+		background	"guis/assets/hud/weapons"
+		matcolor	0, 0.6, 0.6, 0.4
+		visible	("gui::weapon10" != 0)
+	}
+
+	windowDef WeapReload {
+		text	"#str_02020"
+		rect	505 ,415 ,55 ,20 
+		forecolor	0.8, 0.15, 0, pdfullfade[ time * 0.002 ] / 1.2
+		visible	0
+		textscale	0.25
+		font		"fonts/bank"
+		notime		1
+		shear 0,0.35
+	
+	}
+
+	windowDef WeapName {
+		text	" "
+		rect	295 ,460 ,220 ,20 
+		forecolor	0.25, 0.4, 0.4, 1
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+		textalign	2
+		notime		1
+		shear 0,0.35
+
+		onTime 0 {
+			transition "forecolor" "0.25 0.4 0.4 1" "0.25 0.4 0.4 0" "1000" "1" "0" ;
+		}		
+	}
+	
+	windowDef WeapIcon0 {
+		rect		580, 410, 32, 32 
+		background	"guis/assets/hud/icons/fistw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon0" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_02021" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+	windowDef WeapIcon1 {
+		visible		1
+		rect		580, 405, 32, 32 
+		background	"guis/assets/hud/icons/pistolw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon1" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_00242" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon2 {
+		visible		1
+		rect		560, 405, 64, 32 
+		background	"guis/assets/hud/icons/shotgunw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon2" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_00243" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon3 {
+		visible		1
+		rect		560, 410, 64, 32 
+		background	"guis/assets/hud/icons/machinegunw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon3" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_00244" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon4 {
+		visible		1
+		rect		560, 410, 64, 32 
+		background	"guis/assets/hud/icons/chaingunw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon4" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_00245" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon5 {
+		visible		1
+		rect		580, 410, 32, 32 
+		background	"guis/assets/hud/icons/grenadew"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon5" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_01422" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon6 {
+		visible		1
+		rect		560, 410, 64, 32 
+		background	"guis/assets/hud/icons/plasmagunw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon6" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_01456" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon7 {
+		visible		1
+		rect		560, 405, 64, 32 
+		background	"guis/assets/hud/icons/rocketlauncherw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon7" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_01424" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon8 {
+		visible		1
+		rect		560, 405, 64, 32 
+		background	"guis/assets/hud/icons/bfgw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon8" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_02022" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon9 {
+		visible		1
+		rect		580, 410, 32, 32 
+		background	"guis/assets/hud/icons/scubew"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon9" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_02023" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon10 {
+		visible		1
+		rect		560, 410, 64, 32 
+		background	"guis/assets/hud/icons/chainsaww"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon10" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_01425" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef WeapIcon11 {
+		visible		1
+		rect		560, 410, 64, 32 
+		background	"guis/assets/hud/icons/flashlightw"
+		matcolor	1, 1, 1 ,0
+		visible	("gui::weapon11" == 2)
+		notime		1
+
+		onTime 0 {
+			transition "matcolor" "0.7 1 1 0.7" "0.3 0.6 0.6 0" "1000" "1" "0" ;
+			set "weapname::text" "#str_02024" ;
+			resetTime "weapname" "0" ;
+		}
+	}
+
+	windowDef CubePulseParent {
+		visible		1
+		rect		453, 365, 64, 64
+		notime 1
+		float "setvis" 0
+		
+		onTime 0 {
+			transition "CubePulse3::matcolor" "1 1 0.8 0.8" "1 0.7 0.5 0.7" "300" ;
+			transition "rect" "453 367 64 64" "453 365 64 64" "500" "0" "1" ;			
+		
+		}
+		onTime 50 {
+			transition "CubePulse2::matcolor" "1 1 0.8 0.6" "1 0.7 0.5 0.5" "300" ;
+		}
+		onTime 100 {
+			transition "CubePulse1::matcolor" "1 1 0.8 0.5" "1 0.7 0.5 0.4" "300" ;
+		}		
+		onTime 400 {
+			transition "CubePulse1::matcolor" "1 0.7 0.5 0.4" "1 0.7 0.5 0" "500" ;
+			transition "CubePulse2::matcolor" "1 0.7 0.5 0.5" "1 0.7 0.5 0" "500" ;
+			transition "CubePulse3::matcolor" "1 0.7 0.5 0.7" "1 0.7 0.5 0" "500" ;
+		}		
+		onTime 500 {
+			transition "rect" "453 365 64 64" "453 405 64 64" "400" "1" "0" ;
+		}
+		onTime 700 {
+			if ("setvis" == 1) { 
+				set "CubePulse::visible" "1" ;				
+			}
+		}
+		
+		
+		windowDef CubePulse1 {
+			visible		1
+			rect		0, 0, 64, 64 
+			background	"guis/assets/hud/icons/scubew"
+			matcolor	1, 0.7, 0.5 ,0
+			visible		1
+
+		}
+		windowDef CubePulse2 {
+			visible		1
+			rect		0, 0, 64, 64 
+			background	"guis/assets/hud/icons/scube2w"
+			matcolor	1, 0.7, 0.5 ,0
+			visible		1
+		}
+		windowDef CubePulse3 {
+			visible		1
+			rect		10, 10, 44, 44 
+			background	"guis/assets/hud/icons/scube2w2"
+			matcolor	1, 0.7, 0.5 ,0
+			visible		1
+		}
+	}
+	windowDef CubePulse {
+		visible		1
+		rect		470, 437, 32, 32 
+		background	"guis/assets/hud/icons/scubew"
+		matcolor	1, 1, 1 ,1
+		visible		0
+
+		onTime 0 {
+			transition "matcolor" "1 0.65 0.2 0.8" "1 0.6 0.4 0.2" "800" ;
+		}
+		onTime 100 {
+		//	transition "matcolor" "1 0.7 0.5 0.6" "0.3 0.6 0.6 0.25" "150" ;
+		}
+		onTime 800 {
+			transition "matcolor" "1 0.6 0.4 0.2" "1 0.65 0.2 0.8" "800" ;
+		}
+		onTime 1500 {
+			resetTime "0" ;
+		}
+	}
+
+
+//////**********************************************************************
+//  Item Pickup
+//////**********************************************************************
+
+	windowDef InvItem
+	{
+		rect -350,205,350,0
+		notime 1
+		
+		onTime 0 {
+			set "InvItem::visible" "1" ;
+			transition "InvItem::rect" "-120 205 350 0" "-120 205 350 115" "400" "0.2" "0.8" ;
+			transition "InvPopBg2T::matcolor" "1 1 1 0" "1 1 1 0.7" "600" "0.2" "0.8" ;
+			transition "InvPopBg2TR::matcolor" "1 1 1 0" "1 1 1 0.7" "600" "0.2" "0.8" ;
+			transition "InvPopBg2B::matcolor" "1 1 1 0" "1 1 1 0.7" "600" "0.2" "0.8" ;
+			transition "InvPopBg2BR::matcolor" "1 1 1 0" "1 1 1 0.7" "600" "0.2" "0.8" ;
+			transition "InvTitleBG1::rect" "120 27 0 14" "120 27 155 14" "400" "0.2" "0.8" ;
+			transition "InvTitleBG1::backcolor" "0.8 1 1 0" "0.8 1 1 0.1" "600" ;
+		}
+		onTime 400 {	
+			transition "InvTitle::forecolor" "1 1 1 1" "1 0.6 0.2 1" "200" ;
+			transition "InvTitle2::forecolor" "0 0 0 0" "0 0 0 0.6" "200" ;
+		}
+		onTime 600 {
+			transition "ObjectItem::matcolor" "1 1 1 0" "1 1 1 1" "200" ;
+		}
+		onTime 3000 {
+			set "ObjectItem::matcolor" "1 1 1 0" ;
+			transition "InvTitle::forecolor" "1 0.6 0.2 1" "1 1 1 0" "200" ;
+			transition "InvTitle2::forecolor" "0 0 0 0.6" "0 0 0 0" "200" ;
+
+			transition "InvItem::rect" "-120 205 350 115" "-120 205 350 0" "400" "0.2" "0.8" ;
+			transition "InvPopBg2T::matcolor" "1 1 1 0.7" "1 1 1 0" "400" "0.2" "0.8" ;
+			transition "InvPopBg2TR::matcolor" "1 1 1 0.7" "1 1 1 0" "400" "0.2" "0.8" ;
+			transition "InvPopBg2B::matcolor" "1 1 1 0.7" "1 1 1 0" "400" "0.2" "0.8" ;
+			transition "InvPopBg2BR::matcolor" "1 1 1 0.7" "1 1 1 0" "400" "0.2" "0.8" ;
+			transition "InvTitleBG1::rect" "120 27 155 14" "120 27 0 14" "400" "0.2" "0.8" ;
+			transition "InvTitleBG1::backcolor" "0.8 1 1 0.1" "0.8 1 1 0" "400" ;			
+		}
+		onTime 3400 {
+			set "InvItem::visible" "0" ;
+		}
+		
+		
+		windowDef InvPopBg2TClip
+		{
+			rect	0,0,300,50		
+			windowDef InvPopBg2T
+			{
+				rect	0,10,270,68
+				matcolor	1, 1, 1, 0
+				background	"gui/pda/2_tb"
+				visible	1
+			}
+			windowDef InvPopBg2TR
+			{
+				rect	270,10,14,68
+				matcolor	1, 1, 1, 0
+				background	"gui/pda/2_c"
+				visible	1
+			}
+		}
+		windowDef InvPopBg2BClip
+		{
+			rect	0,50,300,60			
+			windowDef InvPopBg2B
+			{
+				rect	0,-3,270,-68
+				matcolor	1, 1, 1, 0
+				background	"gui/pda/2_tb"
+				visible	1
+			}
+			windowDef InvPopBg2BR
+			{
+				rect	270,-3,14,-68
+				matcolor	1, 1, 1, 0
+				background	"gui/pda/2_c"
+				visible	1
+			}
+		}
+		windowDef InvTitleBG1 {
+			rect		120 ,27 ,0 ,14 
+			backcolor	0.8,1,1,0
+			visible		1
+		}
+		windowDef InvTitle2 {
+			rect		124 ,22 ,300 ,20 
+			forecolor	0 ,0 ,0 ,0
+			text		"#str_02027"
+			textscale	0.25
+			font		"fonts/bank"
+			visible		1
+		}
+		windowDef InvTitle {
+			rect		123 ,21 ,300 ,20 
+			forecolor	1, 0.6, 0.2, 0
+			text		"#str_02027"
+			textscale	0.25
+			font		"fonts/bank"
+			visible		1
+		}
+		windowDef ObjectItem {
+			rect		165 ,39 ,64, 64 
+			background	"gui::itemicon"
+		//	background	"guis/assets/hud/items/redkey"
+			variablebackground 1
+			matcolor	1, 1, 1, 0
+			visible		1
+		}		
+	}
+
+	windowDef ItemPickup1
+	{
+		rect	10,310,150,16
+		visible		1
+		noTime	1
+		float	"winactive" "0"
+		
+		onTime 0 {
+			transition "ItemText1::forecolor" "1 0.9 0.4 0.4" "0.6 0.8 0.8 0.7" "200" ;
+			transition "ItemText1BG::forecolor" "0 0 0 0" "0 0 0 1" "200" ;
+			transition "rect" "18 310 150 16" "10 310 150 16" "200" ;
+			set "winactive" "1" ;
+			if ("ItemPickup5::winactive" == 1) { 
+				transition "ItemPickup5::rect" "10 310 150 16" "10 330 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup4::winactive" == 1) { 
+				transition "ItemPickup4::rect" "10 330 150 16" "10 350 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup3::winactive" == 1) { 
+				transition "ItemPickup3::rect" "10 350 150 16" "10 370 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup2::winactive" == 1) { 
+				transition "ItemPickup2::rect" "10 370 150 16" "10 390 150 16" "200" "0" "0.4" ;	
+			}			
+		}
+		onTime 1500 {
+			transition "ItemText1::forecolor" "0.6 0.8 0.8 0.7" "0.6 0.8 0.8 0" "200" ;
+			transition "ItemText1BG::forecolor" "0 0 0 1" "0 0 0 0" "200" ;
+			set "winactive" "0" ;
+		}
+		windowDef ItemText1BG {
+			text		"gui::itemtext1"
+			rect		1 ,1 ,142 ,15 
+			forecolor	0, 0, 0, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+		windowDef ItemText1 {
+			text		"gui::itemtext1"
+			rect		0 ,0 ,142 ,15 
+			forecolor	0.6, 0.8, 0.8, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+	}
+	windowDef ItemPickup2
+	{
+		rect	18,330,150,16
+		visible	1
+		noTime	1
+		float	"winactive" "0"
+		
+		onTime 0 {
+			transition "ItemText2::forecolor" "1 0.9 0.4 0.4" "0.6 0.8 0.8 0.7" "200" ;
+			transition "ItemText2BG::forecolor" "0 0 0 0" "0 0 0 1" "200" ;
+			transition "rect" "18 310 150 16" "10 310 150 16" "200" ;
+			set "winactive" "1" ;
+			if ("ItemPickup1::winactive" == 1) { 
+				transition "ItemPickup1::rect" "10 310 150 16" "10 330 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup5::winactive" == 1) { 
+				transition "ItemPickup5::rect" "10 330 150 16" "10 350 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup4::winactive" == 1) { 
+				transition "ItemPickup4::rect" "10 350 150 16" "10 370 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup3::winactive" == 1) { 
+				transition "ItemPickup3::rect" "10 370 150 16" "10 390 150 16" "200" "0" "0.4" ;	
+			}			
+		}
+		onTime 1500 {
+			transition "ItemText2::forecolor" "0.6 0.8 0.8 0.7" "0.6 0.8 0.8 0" "200" ;
+			transition "ItemText2BG::forecolor" "0 0 0 1" "0 0 0 0" "200" ;
+			set "winactive" "0" ;
+		}				
+		windowDef ItemText2BG {
+			text		"gui::itemtext2"
+			rect		1 ,1 ,142 ,15 
+			forecolor	0, 0, 0, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+		windowDef ItemText2 {
+			text		"gui::itemtext2"
+			rect		0 ,0 ,142 ,15 
+			forecolor	0.6, 0.8, 0.8, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+	}
+	windowDef ItemPickup3
+	{
+		rect	18,350,150,16
+		visible	1
+		noTime	1
+		float	"winactive" "0"
+		
+		onTime 0 {
+			transition "ItemText3::forecolor" "1 0.9 0.4 0.4" "0.6 0.8 0.8 0.7" "200" ;
+			transition "ItemText3BG::forecolor" "0 0 0 0" "0 0 0 1" "200" ;
+			transition "rect" "18 310 150 16" "10 310 150 16" "200" ;
+			set "winactive" "1" ;
+			if ("ItemPickup2::winactive" == 1) { 
+				transition "ItemPickup2::rect" "10 310 150 16" "10 330 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup1::winactive" == 1) { 
+				transition "ItemPickup1::rect" "10 330 150 16" "10 350 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup5::winactive" == 1) { 
+				transition "ItemPickup5::rect" "10 350 150 16" "10 370 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup4::winactive" == 1) { 
+				transition "ItemPickup4::rect" "10 370 150 16" "10 390 150 16" "200" "0" "0.4" ;	
+			}			
+		}
+		onTime 1500 {
+			transition "ItemText3::forecolor" "0.6 0.8 0.8 0.7" "0.6 0.8 0.8 0" "200" ;
+			transition "ItemText3BG::forecolor" "0 0 0 1" "0 0 0 0" "200" ;
+			set "winactive" "0" ;
+		}		
+		windowDef ItemText3BG {
+			text		"gui::itemtext3"
+			rect		1 ,1 ,142 ,15 
+			forecolor	0, 0, 0, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+		windowDef ItemText3 {
+			text		"gui::itemtext3"
+			rect		0 ,0 ,142 ,15 
+			forecolor	0.6, 0.8, 0.8, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+	}
+	windowDef ItemPickup4
+	{
+		rect	18,370,150,16
+		visible	1
+		noTime	1
+		float	"winactive" "0"
+		
+		onTime 0 {
+			transition "ItemText4::forecolor" "1 0.9 0.4 0.4" "0.6 0.8 0.8 0.7" "200" ;
+			transition "ItemText4BG::forecolor" "0 0 0 0" "0 0 0 1" "200" ;
+			transition "rect" "18 310 150 16" "10 310 150 16" "200" ;
+			set "winactive" "1" ;
+			if ("ItemPickup3::winactive" == 1) { 
+				transition "ItemPickup3::rect" "10 310 150 16" "10 330 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup2::winactive" == 1) { 
+				transition "ItemPickup2::rect" "10 330 150 16" "10 350 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup1::winactive" == 1) { 
+				transition "ItemPickup1::rect" "10 350 150 16" "10 370 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup5::winactive" == 1) { 
+				transition "ItemPickup5::rect" "10 370 150 16" "10 390 150 16" "200" "0" "0.4" ;	
+			}			
+		}
+		onTime 1500 {
+			transition "ItemText4::forecolor" "0.6 0.8 0.8 0.7" "0.6 0.8 0.8 0" "200" ;
+			transition "ItemText4BG::forecolor" "0 0 0 1" "0 0 0 0" "200" ;
+			set "winactive" "0" ;
+		}				
+		windowDef ItemText4BG {
+			text		"gui::itemtext4"
+			rect		1 ,1 ,142 ,15 
+			forecolor	0, 0, 0, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+		windowDef ItemText4 {
+			text		"gui::itemtext4"
+			rect		0 ,0 ,142 ,15 
+			forecolor	0.6, 0.8, 0.8, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+	}
+	windowDef ItemPickup5
+	{
+		rect	18,390,150,16
+		visible	1
+		noTime	1
+		float	"winactive" "0"
+		
+		onTime 0 {
+			transition "ItemText5::forecolor" "1 0.9 0.4 0.4" "0.6 0.8 0.8 0.7" "200" ;
+			transition "ItemText5BG::forecolor" "0 0 0 0" "0 0 0 1" "200" ;
+			transition "rect" "18 310 150 16" "10 310 150 16" "200" ;
+			set "winactive" "1" ;
+			if ("ItemPickup4::winactive" == 1) { 
+				transition "ItemPickup4::rect" "10 310 150 16" "10 330 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup3::winactive" == 1) { 
+				transition "ItemPickup3::rect" "10 330 150 16" "10 350 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup2::winactive" == 1) { 
+				transition "ItemPickup2::rect" "10 350 150 16" "10 370 150 16" "200" "0" "0.4" ;	
+			}
+			if ("ItemPickup1::winactive" == 1) { 
+				transition "ItemPickup1::rect" "10 370 150 16" "10 390 150 16" "200" "0" "0.4" ;	
+			}			
+		}
+		onTime 1500 {
+			transition "ItemText5::forecolor" "0.6 0.8 0.8 0.7" "0.6 0.8 0.8 0" "200" ;
+			transition "ItemText5BG::forecolor" "0 0 0 1" "0 0 0 0" "200" ;
+			set "winactive" "0" ;
+		}		
+		
+		windowDef ItemText5BG {
+			text		"gui::itemtext5"
+			rect		1 ,1 ,142 ,15 
+			forecolor	0, 0, 0, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+		windowDef ItemText5 {
+			text		"gui::itemtext5"
+			rect		0 ,0 ,142 ,15 
+			forecolor	0.6, 0.8, 0.8, 0
+			font		"fonts/bank"
+			textscale	0.25
+			visible		1
+			textalign	2
+			textaligny	-5
+		}		
+	}		
+
+
+//---------------------------------------------------------------------------------------------
+// New weapon pickup flash
+//---------------------------------------------------------------------------------------------
+	windowDef WeapIcon1Large {
+		visible		1
+		rect		288, 280, 64, 64
+		background	"gui/hud/pistol"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "285 280 64 64" "288 280 64 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName1Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "288 280 64 64" "291 280 64 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName1Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName1Large {
+		text	"#str_00242"
+		rect	301 ,273 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon2Large {
+		visible		1
+		rect		256,280,128,64
+		background	"gui/hud/shotgun"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "253 280 128 64" "256 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName2Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "256 280 128 64" "259 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName2Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName2Large {
+		text	"#str_00243"
+		rect	288 ,279 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon3Large {
+		visible		1
+		rect		256,280,128,64
+		background	"gui/hud/machinegun"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "253 280 128 64" "256 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName3Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "256 280 128 64" "259 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName3Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName3Large {
+		text	"#str_01378"
+		rect	276 ,265 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon4Large {
+		visible		1
+		rect		256,280,128,64
+		background	"gui/hud/chaingun"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "253 280 128 64" "256 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName4Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "256 280 128 64" "259 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName4Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName4Large {
+		text	"#str_01421"
+		rect	300 ,280 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon5Large {
+		visible		1
+		rect		288, 280, 64, 64
+		background	"gui/hud/grenade"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "285 280 64 64" "288 280 64 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName5Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "288 280 64 64" "291 280 64 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName5Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}		
+	}
+	windowDef WeapName5Large {
+		text	"#str_01422"
+		rect	289 ,280 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon6Large {
+		visible		1
+		rect		251,280,128,64
+		background	"gui/hud/plasmagun"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "253 280 128 64" "256 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName6Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "256 280 128 64" "259 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName6Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName6Large {
+		text	"#str_01423"
+		rect	276 ,270 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon7Large {
+		visible		1
+		rect		256,280,128,64
+		background	"gui/hud/rocketlauncher"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "253 280 128 64" "256 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName7Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "256 280 128 64" "259 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName7Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName7Large {
+		text	"#str_01424"
+		rect	254 ,270 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon8Large {
+		visible		1
+		rect		256,280,128,64
+		background	"gui/hud/bfg"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "253 280 128 64" "256 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName8Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "256 280 128 64" "259 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName8Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName8Large {
+		text	"#str_02022"
+		rect	282 ,268 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon9Large {
+		visible		1
+		rect		288, 280, 64, 64
+		background	"guis/assets/hud/icons/scubew"
+		matcolor	0.6, 1, 0.9, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "285 280 64 64" "288 280 64 64" "300" "0" "1" ;
+			transition "matcolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+			transition "WeapName9Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "288 280 64 64" "291 280 64 64" "300" "0" "1" ;
+			transition "matcolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+			transition "WeapName9Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName9Large {
+		text	"#str_02111"
+		rect	283 ,265 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}	
+	windowDef WeapIcon10Large {
+		visible		1
+		rect		256,280,128,64
+		background	"gui/hud/chainsaw"
+		matcolor	1, 1, 1, 0
+		visible 1
+		notime 1
+		
+		onTime 0 {
+			transition "rect" "253 280 128 64" "256 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 0" "1 1 1 1" "300" ;
+			transition "WeapName10Large::forecolor" "0.6 1 0.9 0" "0.6 1 0.9 1" "300" ;
+		}
+		onTime 1000 {
+			transition "rect" "256 280 128 64" "259 280 128 64" "300" "0" "1" ;
+			transition "matcolor" "1 1 1 1" "1 1 1 0" "300" ;
+			transition "WeapName10Large::forecolor" "0.6 1 0.9 1" "0.6 1 0.9 0" "300" ;
+		}
+	}
+	windowDef WeapName10Large {
+		text	"#str_01425"
+		rect	287 ,273 ,220 ,20 
+		forecolor	0.6, 1, 0.9, 0
+		visible	1
+		textscale	0.25
+		font		"fonts/bank"
+	}
+
+
+}
+

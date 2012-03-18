@@ -1,0 +1,18 @@
+//
+// This is the light that is attached to your head for the off-hand flashlight
+//
+entityDef mounted_flashlight {
+   "spawnclass"            "idLight"
+   "_color"               "1.0 1.0 1.0"
+   "texture"               "lights/flashlight5"
+
+                        // forward  left  up
+   "light_offset"            "0 -15 13"
+
+                        // pitch(90==forward, positive==down)    yaw(positve==left)    roll
+   "light_angle_offset"      "94 6 0"
+
+   "light_target"            "0 0 1280"
+   "light_right"            "-640 0 0"
+   "light_up"               "0 640 0"
+}

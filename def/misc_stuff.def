@@ -1,0 +1,4 @@
+entityDef player_doommarine_head
+{
+"model" "head_player"
+}
